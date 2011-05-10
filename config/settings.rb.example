@@ -1,0 +1,6 @@
+configure do
+  ### OWUMS Settings ###
+  set owums_base_url, 'https://owums_base/url'
+  set owums_operator, 'operator'
+  set owums_password, 'password'
+end
