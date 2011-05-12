@@ -6,11 +6,18 @@ helpers do
   end
 
   def vpn_clients_of(config)
-    current = OpenVPNServer.new config
+    current = OpenVPNServer.new vpn_config(config)
     clients = current.status.last
     current.close
 
     clients
+  end
+
+  def vpn_config(config)
+    new_config = {}
+    new_config.each{ |key, val| config[key.to_s.capitalize] = val }
+
+    vpn_defaults.merge new_config
   end
 
   def vpn_defaults
