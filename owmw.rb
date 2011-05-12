@@ -14,10 +14,11 @@ helpers do
   end
 
   def vpn_config(config)
+    config = vpn_defaults.merge config
     new_config = {}
-    new_config.each{ |key, val| config[key.to_s.capitalize] = val }
 
-    vpn_defaults.merge new_config
+    config.each{ |key, val| new_config[key.to_s.capitalize] = val }
+    new_config
   end
 
   def vpn_defaults
