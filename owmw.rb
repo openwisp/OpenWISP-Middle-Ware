@@ -8,7 +8,7 @@ helpers do
   def vpn_clients_of(config)
     current = OpenVPNServer.new vpn_config(config)
     clients = current.status.last
-    current.close
+    current.destroy
 
     clients
   end
@@ -33,10 +33,10 @@ get '/clients_connected_to/:access_point' do
   @access_point = AccessPoint.find(:first, :params => {:name => params[:access_point]})
 
   if @access_point
-    @access_point.l2vpn_clients.each do |l2vpn|
-      online = []
+    online = []
+    on_radius = OnlineUser.all
 
-      on_radius = OnlineUser.all
+    @access_point.l2vpn_clients.each do |l2vpn|
       on_access_point = vpns_clients.select{ |client| client[1] == l2vpn.identifier }
 
       on_radius.each do |user|
@@ -46,7 +46,7 @@ get '/clients_connected_to/:access_point' do
       end
     end
 
-    user.to_xml
+    online.to_xml
   else
     404
   end
