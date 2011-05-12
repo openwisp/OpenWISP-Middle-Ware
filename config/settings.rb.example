@@ -5,14 +5,14 @@ configure do
   error { "Sorry there was a nasty error... It all came down with: <br /><strong>#{env['sinatra.error']}</strong>" }
 
   ### OWUMS Settings ###
-  set owums_base_site, 'https://owums_base/url'
-  set owums_operator, 'operator'
-  set owums_password, 'password'
+  set :owums_base_site, 'https://owums_base/url'
+  set :owums_operator, 'operator'
+  set :owums_password, 'password'
 
   ### OWM Settings ###
-  set owm_base_site, 'https://owm_base/url'
-  set owm_operator, 'operator'
-  set owm_password, 'password'
+  set :owm_base_site, 'https://owm_base/url'
+  set :owm_operator, 'operator'
+  set :owm_password, 'password'
 
   ### OpenVPN Settings ###
   # :host, :port, :timeout are not required
