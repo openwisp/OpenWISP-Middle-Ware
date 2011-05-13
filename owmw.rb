@@ -29,7 +29,7 @@ end
 
 ### HTTP Resources ###
 
-get '/access_points/:access_point/online_users' do
+get '/access_points/:access_point/online_users.xml' do
   @access_point = AccessPoint.find(:first, :params => {:name => params[:access_point]})
 
   if @access_point
