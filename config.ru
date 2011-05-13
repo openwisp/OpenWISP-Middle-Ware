@@ -16,4 +16,9 @@ require 'owmw'
 # Autoload each model in models directory
 Dir.glob("models/*").each {|model| load model}
 
+# Enable basic auth for any resource
+use Rack::Auth::Basic, "Restricted Area" do |username, password|
+  [username, password] == [settings.owmw_username, settings.owmw_password]
+end
+
 run Sinatra::Application

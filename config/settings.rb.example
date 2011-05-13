@@ -1,6 +1,8 @@
 configure do
   ### Global Settings ###
   set :environment, :development
+  set :owmw_username, 'basic_auth_username'
+  set :owmw_password, 'basic_auth_password'
   not_found { "Not found" }
   error { "Sorry there was a nasty error... It all came down with: <br /><strong>#{env['sinatra.error']}</strong>" }
 
