@@ -2,7 +2,7 @@
 
 helpers do
   def vpns_clients
-    settings.vpns_to_scan.map{ |vpn| vpn_clients_of vpn }
+    settings.vpns_to_scan.map{ |vpn| vpn_clients_of vpn }.flatten(1)
   end
 
   def vpn_clients_of(config)
