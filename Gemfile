@@ -10,9 +10,12 @@ gem "openVPNServer"
 group :development do
   ### Use shotgun to run server in development ###
   gem "shotgun"
+end
 
+group :test do
   ### Required for testing
   gem 'rake'
-  gem 'rack-test'
-  gem 'redgreen'
+  gem 'test-unit', :require => 'test/unit'
+  gem 'rack-test', :require => 'rack/test'
+  gem 'mocha'
 end
