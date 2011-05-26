@@ -20,7 +20,7 @@ class OpenVpn
   private
 
   def connected(config)
-    current = OpenVPNServer.new(config)
+    current = OpenVPNServer.new(Marshal.load(Marshal.dump(config)))
     connected = current.status
     current.destroy
 
