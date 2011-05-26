@@ -1,8 +1,8 @@
 class OpenVpn
 
   def initialize(vpn_configs = nil)
-    @vpns = vpn_configs || [vpn_defaults]
-    @vpns.map!{ |config| prepare(config) }
+    configs = vpn_configs || [vpn_defaults]
+    @vpns = configs.map{ |config| prepare(config) }
   end
 
   def find_users_by_cname(cname)
