@@ -10,38 +10,43 @@ class OwmwTest < Test::Unit::TestCase
   end
 
 
-
   ### Fixtures ...
-  def an_access_point
+  def an_access_point(hostname, common_name, mac_address)
     AccessPoint.new.load(
-        :name => 'cool_ap_name',
-        :mac_address => '00:11:22:33:44:55',
+        :name => hostname,
+        :mac_address => mac_address,
         :l2vpn_clients => [
-            :identifier => 'l2vpn_common_name'
+            :identifier => common_name
         ]
     )
   end
 
-  def no_online_users
-    [OnlineUser.new.load({})]
-  end
-
-  def some_online_users(mac_address)
+  def an_online_user(mac_address)
     OnlineUser.new.load(
-        :radius_accounting => {:calling_station_id => (mac_address)}
+        :radius_accounting => {:calling_station_id => mac_address}
     )
   end
 
 
   ### Tests ...
   def test_there_are_no_online_users_on_access_point
-    AccessPoint.expects(:find).returns(an_access_point)
-    OnlineUser.expects(:all).returns(no_online_users)
-    OpenVpn.expects(:new).returns(['0', 'l2vpn_common_name'])
+    AccessPoint.expects(:find).returns an_access_point('cool_ap', 'cn_1', '00:11:22:33:44:55')
+    OnlineUser.expects(:all).returns [an_online_user('55:44:33:22:11:00')]
+    OpenVpn.any_instance.stubs(:users).returns [['A0:5E:11:22:22:44', 'cn_2']]
 
-    get '/access_points/cool_ap_name/online_users.xml'
+    get '/access_points/cool_ap/online_users.xml'
     assert last_response.ok?
     assert last_response.body == [].to_xml
+  end
+
+  def test_there_are_some_online_users_on_access_point
+    AccessPoint.expects(:find).returns an_access_point('cool_ap', 'cn_1', '00:11:22:33:44:55')
+    OnlineUser.expects(:all).returns [an_online_user('A0:5E:11:22:22:44')]
+    OpenVpn.any_instance.stubs(:users).returns [['A0:5E:11:22:22:44', 'cn_1']]
+
+    get '/access_points/cool_ap/online_users.xml'
+    assert last_response.ok?
+    assert last_response.body == [an_online_user('A0:5E:11:22:22:44')].to_xml
   end
 
   def test_online_users_but_access_point_not_found

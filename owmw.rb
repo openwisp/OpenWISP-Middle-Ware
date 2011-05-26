@@ -6,10 +6,11 @@ get '/access_points/:id/online_users.xml' do
     on_radius = OnlineUser.all
 
     @access_point.l2vpn_clients.each do |l2vpn|
-      on_access_point = OpenVpn.new(settings.vpns_to_scan).select{ |client| client[1] == l2vpn.identifier }
+      vpns = OpenVpn.new(settings.vpns_to_scan)
+      connected_to_ap = vpns.find_users_by_cname(l2vpn.identifier)
 
       on_radius.each do |user|
-        if on_access_point.any?{ |client| client[0] == user.radius_accounting.calling_station_id }
+        if connected_to_ap.any?{ |client| client == user.radius_accounting.calling_station_id }
           online << user
         end
       end

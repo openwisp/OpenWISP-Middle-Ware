@@ -1,21 +1,33 @@
 class OpenVpn
-  attr_reader :clients
 
-  def initialize(vpn_configs)
-    @clients = vpn_configs.map{ |vpn| vpn_clients_of vpn }.flatten(1)
+  def initialize(vpn_configs = nil)
+    @vpns = vpn_configs || [vpn_defaults]
+    @vpns.map!{ |config| prepare(config) }
+  end
+
+  def find_users_by_cname(cname)
+    users.select{ |connected_to_server| connected_to_server.last == cname }.map{ |client| client[0] }
+  end
+
+  def clients
+    @vpns.map{ |vpn| connected(vpn).first }.flatten(1)
+  end
+
+  def users
+    @vpns.map{ |vpn| connected(vpn).last }.flatten(1)
   end
 
   private
 
-  def vpn_clients_of(config)
-    current = OpenVPNServer.new vpn_config(config)
-    clients = current.status.last
+  def connected(config)
+    current = OpenVPNServer.new(config)
+    connected = current.status
     current.destroy
 
-    clients
+    connected
   end
 
-  def vpn_config(config)
+  def prepare(config)
     config = vpn_defaults.merge config
     new_config = {}
 
