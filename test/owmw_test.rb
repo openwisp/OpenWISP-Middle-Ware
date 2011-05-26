@@ -32,7 +32,7 @@ class OwmwTest < Test::Unit::TestCase
   def test_there_are_no_online_users_on_access_point
     AccessPoint.expects(:find).returns an_access_point('cool_ap', 'cn_1', '00:11:22:33:44:55')
     OnlineUser.expects(:all).returns [an_online_user('55:44:33:22:11:00')]
-    OpenVpn.any_instance.stubs(:users).returns [['A0:5E:11:22:22:44', 'cn_2']]
+    OpenVpn.any_instance.stubs(:users).returns [['A0:5E:11:22:22:44', 'cn_2', "1.2.3.4:4099", "Thu May 26 14:39:41 2011"]]
 
     get '/access_points/cool_ap/online_users.xml'
     assert last_response.ok?
@@ -42,7 +42,7 @@ class OwmwTest < Test::Unit::TestCase
   def test_there_are_some_online_users_on_access_point
     AccessPoint.expects(:find).returns an_access_point('cool_ap', 'cn_1', '00:11:22:33:44:55')
     OnlineUser.expects(:all).returns [an_online_user('A0:5E:11:22:22:44')]
-    OpenVpn.any_instance.stubs(:users).returns [['A0:5E:11:22:22:44', 'cn_1']]
+    OpenVpn.any_instance.stubs(:users).returns [['A0:5E:11:22:22:44', 'cn_1', "1.2.3.4:4099", "Thu May 26 14:39:41 2011"]]
 
     get '/access_points/cool_ap/online_users.xml'
     assert last_response.ok?

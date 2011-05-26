@@ -6,7 +6,7 @@ class OpenVpn
   end
 
   def find_users_by_cname(cname)
-    users.select{ |connected_to_server| connected_to_server.last == cname }.map{ |client| client[0] }
+    users.select{ |connected_to_server| connected_to_server[1] == cname }.map{ |client| client[0] }
   end
 
   def clients
