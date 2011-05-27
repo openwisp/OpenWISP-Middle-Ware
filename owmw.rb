@@ -2,22 +2,17 @@ get '/access_points/:id/online_users.xml' do
   @access_point = AccessPoint.find(params[:id])
 
   if @access_point
-    online = []
-    on_radius = OnlineUser.all
+    @online_users = []
 
-    @access_point.l2vpn_clients.each do |l2vpn|
-      vpns = OpenVpn.new(settings.vpns_to_scan)
-      connected_to_ap = vpns.find_users_by_cname(l2vpn.identifier)
-
-      on_radius.each do |user|
-        if connected_to_ap.any?{ |client| client == user.radius_accounting.calling_station_id }
-          online << user
-        end
-      end
+    @access_point.associated_mac_addresses.each do |mac_address|
+      @online_users << OnlineUser.find_by_mac_address(mac_address)
     end
 
-    online.to_xml
+    @online_users.compact.to_xml
   else
     404
   end
 end
+
+#get '/access_points/:mac_address/urls.xml' do
+#end

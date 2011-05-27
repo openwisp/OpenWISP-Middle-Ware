@@ -5,8 +5,12 @@ class OpenVpn
     @vpns = configs.map{ |config| prepare(config) }
   end
 
-  def find_users_by_cname(cname)
-    users.select{ |connected_to_server| connected_to_server[1] == cname }.map{ |client| client[0] }
+  def find_users_mac_addresses_by_cname(cname)
+    users.select{ |connected_to_server| connected_to_server[1] == cname }.map{ |user| user[0] }
+  end
+
+  def find_client_cname_by_associated_mac_address(mac_address)
+    users.select{ |connected_to_server| connected_to_server[0] == mac_address }.map{ |user| user[1] }
   end
 
   def clients
