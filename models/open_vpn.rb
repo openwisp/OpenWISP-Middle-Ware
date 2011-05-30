@@ -10,7 +10,7 @@ class OpenVpn
   end
 
   def find_client_cname_by_associated_mac_address(mac_address)
-    users.select{ |connected_to_server| connected_to_server[0] == mac_address }.map{ |user| user[1] }
+    users.select{ |connected_to_server| connected_to_server[0] == mac_address }.map{ |user| user[1] }.first
   end
 
   def clients
