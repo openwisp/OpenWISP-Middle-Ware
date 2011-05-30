@@ -15,7 +15,9 @@ class OwmwTest < Test::Unit::TestCase
     AccessPoint.new.load(
         :name => hostname,
         :mac_address => mac_address,
-        :site_url => site_url,
+        :access_point_group => {
+            :site_url => site_url
+        },
         :l2vpn_clients => [
             :identifier => common_name
         ]
@@ -32,6 +34,14 @@ class OwmwTest < Test::Unit::TestCase
   ### Tests ...
 
   # Pending test, yet to implement
+  def test_retrieve_url_for_access_point_from_mac_address_but_none_found
+    OpenVpn.any_instance.stubs(:users).returns []
+    AccessPoint.stubs(:find).returns(nil)
+
+    get '/online_users/A0%3A5E%3A11%3A22%3A22%3A44/access_point.xml'
+    assert last_response.not_found?
+  end
+
   def test_retrieve_url_for_access_point_from_mac_address
     OpenVpn.any_instance.stubs(:users).returns [['A0:5E:11:22:22:44', 'cn_1', "1.2.3.4:4099", "Thu May 26 14:39:41 2011"]]
     AccessPoint.stubs(:find).returns an_access_point('cool_ap', 'cn_1', '00:11:22:33:44:55', 'http://google.com')
