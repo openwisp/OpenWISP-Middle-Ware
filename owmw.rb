@@ -14,14 +14,16 @@ get '/access_points/:name/associated_users.xml' do
   end
 end
 
-get '/associated_users/:mac_address/access_point.xml' do
+get '/associated_users/:mac_address.xml' do
   vpn_server = OpenVpn.new(settings.vpns_to_scan)
   cn = vpn_server.find_client_cname_by_associated_mac_address(params[:mac_address])
 
-  @access_point = AccessPoint.find(cn)
+  @associated_user = AssociatedUser.new.load(
+    :access_point => AccessPoint.find(cn)
+  )
 
-  if @access_point
-    @access_point.to_xml
+  if @associated_user
+    @associated_user.to_xml
   else
     404
   end
