@@ -5,7 +5,7 @@ get '/access_points/:name/associated_users.xml' do
     @associated_users = []
 
     @access_point.associated_mac_addresses.each do |mac_address|
-      @associated_users << AssociatedUser.find_by_mac_address(mac_address)
+      @associated_users << OnlineUser.find_by_mac_address(mac_address)
     end
 
     @associated_users.compact.to_xml
