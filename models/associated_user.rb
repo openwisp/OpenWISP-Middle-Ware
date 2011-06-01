@@ -1,4 +1,4 @@
-class OnlineUser < ActiveResource::Base
+class AssociatedUser < ActiveResource::Base
   extend ActiveModel::Naming
   include ActiveModel::Serializers::Xml
 
@@ -7,6 +7,6 @@ class OnlineUser < ActiveResource::Base
   self.password = settings.owums_password
 
   def self.find_by_mac_address(mac)
-    OnlineUser.all.select{ |user| user.radius_accounting.calling_station_id == mac }.first
+    AssociatedUser.all.select{ |user| user.radius_accounting.calling_station_id == mac }.first
   end
 end
