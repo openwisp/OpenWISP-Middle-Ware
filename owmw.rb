@@ -7,7 +7,7 @@ get %r{\/access_points(\/|\/\/|\/all\/)associated_users.xml} do
       user = OnlineUser.find_by_mac_address(mac_address, online_users)
 
       if user
-        user.access_point = access_point
+        user.access_point_id = access_point.id
         @associated_users << user
       end
     end
@@ -24,7 +24,12 @@ get '/access_points/:name/associated_users.xml' do
     @associated_users = []
 
     access_point.associated_mac_addresses.each do |mac_address|
-      @associated_users << OnlineUser.find_by_mac_address(mac_address, online_users)
+      user = OnlineUser.find_by_mac_address(mac_address, online_users)
+
+      if user
+        user.access_point_id = access_point.id
+        @associated_users << user
+      end
     end
 
     @associated_users.compact.to_xml
