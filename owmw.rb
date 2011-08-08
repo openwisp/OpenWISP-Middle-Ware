@@ -1,4 +1,4 @@
-get '/access_points/associated_users.xml' do
+get %r{\/access_points(\/|\/\/|\/all\/)associated_users.xml} do
   online_users = OnlineUser.all
 
   @access_points = AccessPoint.all.each do |access_point|
