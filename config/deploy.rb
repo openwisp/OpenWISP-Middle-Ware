@@ -43,13 +43,12 @@ set :rubygem_paths, "/usr/local/bin/gem"
 # BUNDLER
 require 'bundler/capistrano'
 
-# RAILS
-require 'cap_recipes/tasks/rails/manage'
-after "deploy:restart", "rails:repair_permissions" # fix the permissions to work properly
+# SINATRA
+after "deploy:restart", "sinatra:repair_permissions" # fix the permissions to work properly
 
 # PASSENGER
 require 'cap_recipes/tasks/passenger'
 
 # CUSTOM RECIPES
-load 'lib/recipes/rails'
+load 'lib/recipes/sinatra'
 load 'lib/recipes/deploy'

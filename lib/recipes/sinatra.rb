@@ -1,0 +1,14 @@
+namespace :sinatra do
+  desc "Repair permissions to allow user to perform all actions"
+  task :repair_permissions, :roles => :app do
+    puts "Applying correct permissions to allow for proper command execution"
+    try_sudo "mkdir -p #{shared_path}/log #{current_path}/tmp"
+    try_sudo "chmod -R 770 #{shared_path}/log #{current_path}/tmp"
+    try_sudo "chown -R www-data.www-data #{shared_path}/log #{current_path}/tmp"
+  end
+
+  desc "Displays the production log from the server locally"
+  task :tail, :roles => :app do
+    stream "tail -f #{shared_path}/log/sinatra.log"
+  end
+end
