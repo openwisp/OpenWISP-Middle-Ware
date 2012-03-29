@@ -1,5 +1,6 @@
 # This file is part of the OpenWISP MiddleWare
 #
+# Copyright (C) 2012 OpenWISP.org
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,7 +28,7 @@ class OwmwTest < Test::Unit::TestCase
 
 
   ### Fixtures ...
-  def an_access_point(hostname, common_name, mac_address, site_url='http://openwisp.caspur.it')
+  def an_access_point(hostname, common_name, mac_address, site_url='http://openwisp.org')
     AccessPoint.new.load(
         :name => hostname,
         :mac_address => mac_address,
