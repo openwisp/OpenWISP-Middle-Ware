@@ -46,6 +46,10 @@ class OpenVpn
     current.destroy
 
     connected
+  rescue Exception => e
+    $stderr.puts "Error processing vpn for configuration '#{config.inspect}': #{e}"
+    
+    []
   end
 
   def prepare(config)
