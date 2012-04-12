@@ -56,22 +56,10 @@ get '/access_points/:name/associated_users.xml' do
 end
 
 get '/associated_users/:mac_address.xml' do
-  if !defined?(@@owmw_cache) || @@owmw_cache[params[:mac_address]].nil?
-    vpn_server = OpenVpn.new(settings.vpns_to_scan)
-    cn = vpn_server.find_client_cname_by_associated_mac_address(params[:mac_address])
-
-    @associated_user = AssociatedUser.new.load(
-        :access_point => AccessPoint.find(cn)
-    )
-
-    if @associated_user
-      # Initialize cache with 60 seconds of duration with memoization
-      @@owmw_cache = Cache.new 60 unless defined?(@@owmw_cache)
-      @@owmw_cache[params[:mac_address]] = @associated_user.to_xml
-    else
-      404
-    end
+  vpn_server = OpenVpn.new(settings.vpns_to_scan)
+  if (cn = vpn_server.find_client_cname_by_associated_mac_address(params[:mac_address])) && (@associated_user = AssociatedUser.new.load(:access_point => AccessPoint.find(cn)))
+    @@owmw_cache[params[:mac_address]] = @associated_user.to_xml
   else
--    @@owmw_cache[params[:mac_address]]
+    @@owmw_cache[params[:mac_address]] = 404
   end
 end
