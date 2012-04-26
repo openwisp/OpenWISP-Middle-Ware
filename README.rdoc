@@ -1,0 +1,57 @@
+= OpenWISP Middle Ware
+
+== Description
+
+OWMW is a middleware system written from scratch with Sinatra. 
+Main features:
+* interconnect OpenWISP applications via a RESTful API
+
+== Configuration
+
+=== OWMW setup
+
+You'll find _config/settings.rb.example_ which can be used as an example.
+
+=== Web server setup
+
+You'll need to configure a web server.
+
+For instance, if you wan't to use apache2 you'll need to configure two virtual hosts. So you configuration will look like to the following:
+
+    Listen 80
+    <VirtualHost *:80>
+
+      DocumentRoot [your owmw directory]/public
+
+      LogLevel warn
+      ErrorLog [error log file]
+      CustomLog [access log file] combined
+
+      PassengerDefaultUser www-data # Change it to reflect your needs
+      RackEnv production            # Change it to reflect your needs
+
+      <Directory [your owmw directory]/public>
+        AllowOverride all
+        Options -MultiViews	
+        Order allow,deny
+        Allow from all
+      </Directory>
+
+    </VirtualHost>
+
+== Copyright
+
+Copyright (C) 2012 OpenWISP.org
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
