@@ -43,18 +43,20 @@ class OpenVpn
   private
 
   def connected(config)
-    
     @@openvpn_status_cache.fetch(config.to_s) do
       current = OpenVPNServer.new(Marshal.load(Marshal.dump(config)))
+      begin
         connected = current.status
+      ensure
         current.destroy
+      end
 
       connected
     end
     
   rescue Exception => e
     $stderr.puts "Error processing vpn for configuration '#{config.inspect}': #{e}"
-    
+
     []
   end
 
