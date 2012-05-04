@@ -17,6 +17,8 @@
 
 class OpenVpn
 
+  @@openvpn_status_cache = ActiveSupport::Cache::MemoryStore.new( :expires_in => (settings.vpns_status_cache_timeout rescue 3.seconds) )
+
   def initialize(vpn_configs = nil)
     configs = vpn_configs || [vpn_defaults]
     @vpns = configs.map{ |config| prepare(config) }
@@ -41,14 +43,20 @@ class OpenVpn
   private
 
   def connected(config)
-    current = OpenVPNServer.new(Marshal.load(Marshal.dump(config)))
-    connected = current.status
-    current.destroy
+    @@openvpn_status_cache.fetch(config.to_s) do
+      current = OpenVPNServer.new(Marshal.load(Marshal.dump(config)))
+      begin
+        connected = current.status
+      ensure
+        current.destroy
+      end
 
-    connected
+      connected
+    end
+    
   rescue Exception => e
     $stderr.puts "Error processing vpn for configuration '#{config.inspect}': #{e}"
-    
+
     []
   end
 

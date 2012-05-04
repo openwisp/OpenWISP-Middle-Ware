@@ -22,4 +22,6 @@ configure do
     {:host => "localhost", :port => 1234, :password => 'mypass', :timeout => 10},
     {:host => "localhost", :port => 1234, :password => 'mypass', :timeout => 15}
   ]
+  
+  set :vpns_status_cache_timeout, 3
 end
