@@ -15,20 +15,27 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'rubygems'
-require 'bundler'
+class Cache
 
-Bundler.setup
+  def initialize(options = {})
+    @cache_semaphore = Mutex.new
+    @cache = {}
+    @duration = options[:expires_in] || 10
+  end
 
-Bundler.require :default
-Bundler.require :development if development?
-Bundler.require :test if test?
+  def fetch(key)
+    @cache_semaphore.lock
 
-# Require necessary libs and settings
-require 'config/settings'
-require 'owmw'
+    @cache.delete_if { |_key, cached| cached[:expire_date] < Time.now }
 
-# Require extra libs
-Dir.glob("lib/extras/*").each {|lib| require lib}
-# Require each model in models directory
-Dir.glob("models/*").each {|model| require model}
+    unless defined? @cache[key][:value]
+      @cache[key] = {:value => yield, :expire_date => Time.now + @duration}
+    end
+
+    @cache[key][:value]
+
+  ensure
+    @cache_semaphore.unlock
+  end
+
+end
