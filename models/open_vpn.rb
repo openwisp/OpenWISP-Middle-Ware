@@ -17,7 +17,7 @@
 
 class OpenVpn
 
-  @@openvpn_status_cache = Cache.new( :expires_in => (settings.vpns_status_cache_timeout rescue 3.seconds) )
+  @@openvpn_status_cache = Cache.new( :expires_in => (settings.vpns_status_cache_timeout rescue 3) )
 
   def initialize(vpn_configs = nil)
     configs = vpn_configs || [vpn_defaults]
