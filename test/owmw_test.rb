@@ -49,7 +49,8 @@ class OwmwTest < Test::Unit::TestCase
 
 
   ### Tests ...
-
+  
+  
   # Pending test, yet to implement
   def test_retrieve_url_for_access_point_from_mac_address_but_none_found
     OpenVpn.any_instance.stubs(:users).returns []
@@ -67,7 +68,6 @@ class OwmwTest < Test::Unit::TestCase
     assert last_response.ok?
     assert last_response.body == an_access_point('cool_ap', 'cn_1', '00:11:22:33:44:55', 'http://google.com').to_xml
   end
-
 
   def test_there_are_no_associated_users_on_access_point
     AccessPoint.stubs(:find).returns an_access_point('cool_ap', 'cn_1', '00:11:22:33:44:55')
