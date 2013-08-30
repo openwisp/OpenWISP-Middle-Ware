@@ -15,35 +15,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require 'rubygems'
-require 'bundler'
+class RadiusAccounting < ActiveResource::Base
+  extend ActiveModel::Naming
+  include ActiveModel::Serializers::Xml
 
-Bundler.setup
-
-Bundler.require :default
-Bundler.require :development if development?
-Bundler.require :test if test?
-
-# Require necessary libs and settings
-require 'config/settings'
-require 'owmw'
-
-# Require extra libs
-Dir.glob("lib/extras/*").each {|lib| require lib}
-# Require each model in models directory
-Dir.glob("models/*").each {|model| require model}
-
-class Hash
-  def collect!(&block)
-    ret = []
-    self.each {|key,val|
-      if val.kind_of? Array
-        val.collect!{|subval|
-          block.call subval
-        }
-        ret = val
-      end
-    }
-    return ret
-  end
+  self.site = settings.owums_base_site
+  self.user = settings.owums_operator
+  self.password = settings.owums_password
+  self.format = :xml
 end
