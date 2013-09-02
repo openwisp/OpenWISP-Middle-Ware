@@ -15,6 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# you can debug this sinatra app from the console by running this command
+# from the same folder where this file is located:
+# $> RACK_ENV=production bundle exec irb -r irb/completion -r owmw.rb
+require 'lib/boot'  # added to support console loading
+
 get '/radius_accountings.xml' do
   query_string = {}
   if params[:last]: query_string[:last] = params[:last]; end
