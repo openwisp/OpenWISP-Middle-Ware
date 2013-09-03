@@ -22,7 +22,7 @@ get '/radius_accountings.xml' do
   if params[:mac_address]: query_string[:ap] = params[:mac_address]; end
   
   @radius_accountings = RadiusAccounting.find(:all, :params => query_string)
-  @radius_accountings.to_xml
+  @radius_accountings.compact.to_xml
 end
 
 get %r{\/access_points(\/|\/\/|\/all\/)associated_users.xml} do
