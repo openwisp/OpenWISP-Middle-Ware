@@ -22,5 +22,5 @@ class RadiusAccounting < ActiveResource::Base
   self.site = settings.owums_base_site
   self.user = settings.owums_operator
   self.password = settings.owums_password
-  self.format = :xml
+  self.format = CustomXMLFormatter.new
 end
