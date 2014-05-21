@@ -73,7 +73,11 @@ end
 get '/associated_users/:mac_address.xml' do
   vpn_server = OpenVpn.new(settings.vpns_to_scan)
   if (cn = vpn_server.find_client_cname_by_associated_mac_address(params[:mac_address])) && (@associated_user = AssociatedUser.new.load(:access_point => AccessPoint.find(cn)))
-    @associated_user.to_xml
+    xml = @associated_user.to_xml
+    # avoid type="yaml" which is not allowed anymore in latest Rails XML parser versions
+    xml = xml.gsub(" type=\"yaml\"", "")
+    xml = xml.gsub(" nil=\"true\"", "")
+    return xml
   else
     404
   end
