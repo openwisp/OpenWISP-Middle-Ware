@@ -5,7 +5,7 @@ gem "sinatra"
 gem "activemodel", :require => 'active_model'
 gem "activeresource", :require => 'active_resource'
 
-gem "openVPNServer", :git => 'https://github.com/openwisp/openVPNServer.git'
+gem "openVPNServer", '0.0.2', :git => 'https://github.com/openwisp/openVPNServer.git'
 
 # Deploy with Capistrano
 gem 'capistrano', '~> 2.9.0', :require => false
