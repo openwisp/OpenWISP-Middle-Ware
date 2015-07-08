@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/openwisp/openVPNServer.git
+  revision: 4ac49869684a34e5c5a17d4b91a7f94ae8569a5d
+  specs:
+    openVPNServer (0.0.2)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -30,7 +36,6 @@ GEM
     net-ssh (2.2.1)
     net-ssh-gateway (1.1.0)
       net-ssh (>= 1.99.1)
-    openVPNServer (0.0.2)
     rack (1.2.2)
     rack-test (0.6.0)
       rack (>= 1.0)
@@ -54,7 +59,7 @@ DEPENDENCIES
   capistrano-ext (~> 1.2.1)
   capistrano_colors (~> 0.5.4)
   mocha
-  openVPNServer
+  openVPNServer (= 0.0.2)!
   rack-test
   rake
   shotgun
